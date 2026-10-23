@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: eduai_user
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ChangeMeInProd2026!}
+      POSTGRES_DB: eduai_db
+    volumes:
+      - eduai_pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U eduai_user -d eduai_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      APP_URL: ${APP_URL:-http://localhost:3000}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      EDUAI_AI_MODE: ${EDUAI_AI_MODE:-auto}
+      EDUAI_SESSION_SECRET: ${EDUAI_SESSION_SECRET:-change-this-in-production-to-64-char-hex}
+      EDUAI_DB_PATH: /app/data/eduai.sqlite
+      DATABASE_URL: postgresql+psycopg2://eduai_user:${POSTGRES_PASSWORD:-ChangeMeInProd2026!}@db:5432/eduai_db
+    volumes:
+      - eduai_appdata:/app/data
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  eduai_pgdata:
+  eduai_appdata:

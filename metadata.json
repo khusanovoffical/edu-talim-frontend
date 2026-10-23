@@ -1,0 +1,6 @@
+{
+  "name": "EduAI va IT Yoshlar — Intellektual Ta'lim Platformasi",
+  "description": "Maktab o'quvchilari, o'qituvchilar va koordinatorlar uchun o'zbek tilidagi sun'iy intellekt repetitori, Matematika va Ingliz tili modullari hamda IT Yoshlar texnologik loyihalar platformasi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
