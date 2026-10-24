@@ -5,7 +5,10 @@ import {
   ExplanationStyle, UserRole
 } from '../types';
 
-const API_BASE = '/api/v1';
+const RAW_BASE = ((import.meta as any).env?.VITE_API_BASE_URL || '').replace(/\/+$/, '');
+const API_BASE = (RAW_BASE && typeof window !== 'undefined' && !window.location.hostname.includes('localhost') && !window.location.hostname.includes('127.0.0.1'))
+  ? `${RAW_BASE}/api/v1`
+  : '/api/v1';
 
 function getAuthHeader(): Record<string, string> {
   const token = localStorage.getItem('eduai_token');
