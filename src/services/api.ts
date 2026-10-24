@@ -31,7 +31,8 @@ export async function apiFetch<T = any>(path: string, options: RequestInit = {})
     headers['X-CSRF-Token'] = csrf;
   }
 
-  const response = await fetch(path, {
+  const targetUrl = path.startsWith('/api') ? `https://edu-talim-backent.vercel.app${path}` : path;
+  const response = await fetch(targetUrl, {
     ...options,
     headers,
   });
