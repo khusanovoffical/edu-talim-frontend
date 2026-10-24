@@ -8,7 +8,7 @@ import {
   MessageSquare, Settings, Plus, Trash2, CheckCircle2,
   AlertCircle, Calendar, Clock, Sparkles, Upload, Image as ImageIcon,
   Play, Check, X, ChevronRight, Star, Award, Download,
-  Search, Filter, Sliders, Eye, HelpCircle, Bot, ArrowRight,
+  Search, Filter, Sliders, Eye, EyeOff, HelpCircle, Bot, ArrowRight,
   Shield, Key, Lock, UserCheck
 } from 'lucide-react';
 import { BackButton } from '../components/BackButton';
@@ -102,6 +102,7 @@ export const TeacherDashboard: React.FC = () => {
   const [studentFullName, setStudentFullName] = useState('');
   const [studentEmail, setStudentEmail] = useState('');
   const [studentPassword, setStudentPassword] = useState('');
+  const [showStudentPassword, setShowStudentPassword] = useState(false);
   const [studentGrade, setStudentGrade] = useState<number>(7);
   const [studentClassId, setStudentClassId] = useState<number | ''>('');
   const [studentSearch, setStudentSearch] = useState('');
@@ -120,6 +121,8 @@ export const TeacherDashboard: React.FC = () => {
   const [profileFullName, setProfileFullName] = useState(user?.full_name || '');
   const [profilePassword, setProfilePassword] = useState('');
   const [profilePasswordConfirm, setProfilePasswordConfirm] = useState('');
+  const [showProfilePassword, setShowProfilePassword] = useState(false);
+  const [showProfilePasswordConfirm, setShowProfilePasswordConfirm] = useState(false);
   const [updatingProfile, setUpdatingProfile] = useState(false);
 
   const token = localStorage.getItem('eduai_token');
@@ -1763,14 +1766,24 @@ export const TeacherDashboard: React.FC = () => {
                     <label className="font-bold text-slate-700 block mb-1">
                       Boshlang'ich parol <span className="text-rose-500">*</span>
                     </label>
-                    <input
-                      type="password"
-                      required
-                      value={studentPassword}
-                      onChange={e => setStudentPassword(e.target.value)}
-                      placeholder="Kamida 6 ta belgi"
-                      className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 font-medium"
-                    />
+                    <div className="relative">
+                      <input
+                        type={showStudentPassword ? "text" : "password"}
+                        required
+                        value={studentPassword}
+                        onChange={e => setStudentPassword(e.target.value)}
+                        placeholder="Kamida 6 ta belgi"
+                        className="w-full p-2.5 pr-10 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 font-medium"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowStudentPassword(!showStudentPassword)}
+                        className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 focus:outline-none"
+                        title={showStudentPassword ? "Parolni yashirish" : "Parolni ko'rsatish"}
+                      >
+                        {showStudentPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-3">
@@ -2124,26 +2137,46 @@ export const TeacherDashboard: React.FC = () => {
                 <label className="font-bold text-slate-700 block mb-1">
                   Yangi parol
                 </label>
-                <input
-                  type="password"
-                  value={profilePassword}
-                  onChange={e => setProfilePassword(e.target.value)}
-                  placeholder="Agar parolni o'zgartirmoqchi bo'lsangiz, kiriting"
-                  className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 font-medium"
-                />
+                <div className="relative">
+                  <input
+                    type={showProfilePassword ? "text" : "password"}
+                    value={profilePassword}
+                    onChange={e => setProfilePassword(e.target.value)}
+                    placeholder="Agar parolni o'zgartirmoqchi bo'lsangiz, kiriting"
+                    className="w-full p-3 pr-10 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 font-medium"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowProfilePassword(!showProfilePassword)}
+                    className="absolute right-3 top-3.5 text-slate-400 hover:text-slate-600 focus:outline-none"
+                    title={showProfilePassword ? "Parolni yashirish" : "Parolni ko'rsatish"}
+                  >
+                    {showProfilePassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
 
               <div>
                 <label className="font-bold text-slate-700 block mb-1">
                   Yangi parolni tasdiqlang
                 </label>
-                <input
-                  type="password"
-                  value={profilePasswordConfirm}
-                  onChange={e => setProfilePasswordConfirm(e.target.value)}
-                  placeholder="Yangi parolni qayta kiriting"
-                  className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 font-medium"
-                />
+                <div className="relative">
+                  <input
+                    type={showProfilePasswordConfirm ? "text" : "password"}
+                    value={profilePasswordConfirm}
+                    onChange={e => setProfilePasswordConfirm(e.target.value)}
+                    placeholder="Yangi parolni qayta kiriting"
+                    className="w-full p-3 pr-10 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-600 font-medium"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowProfilePasswordConfirm(!showProfilePasswordConfirm)}
+                    className="absolute right-3 top-3.5 text-slate-400 hover:text-slate-600 focus:outline-none"
+                    title={showProfilePasswordConfirm ? "Parolni yashirish" : "Parolni ko'rsatish"}
+                  >
+                    {showProfilePasswordConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
             </div>
 

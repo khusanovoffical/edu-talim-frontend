@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom';
 import { BackButton } from '../components/BackButton';
 import {
   Building2, Users, GraduationCap, School, Code, Plus,
-  CheckCircle, XCircle, Search, Eye, AlertCircle, Phone,
+  CheckCircle, XCircle, Search, Eye, EyeOff, AlertCircle, Phone,
   CreditCard, FileText, Briefcase, Award, Sparkles, RefreshCw
 } from 'lucide-react';
 
@@ -26,6 +26,8 @@ export const SchoolAdminDashboard: React.FC = () => {
   const [showTeacherModal, setShowTeacherModal] = useState(false);
   const [showClassModal, setShowClassModal] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [showStudentPassword, setShowStudentPassword] = useState(false);
+  const [showTeacherPassword, setShowTeacherPassword] = useState(false);
 
   // Student Form
   const [studentForm, setStudentForm] = useState({
@@ -687,14 +689,24 @@ export const SchoolAdminDashboard: React.FC = () => {
                 </div>
                 <div>
                   <label className="font-semibold text-slate-700 block mb-1">Parol *</label>
-                  <input
-                    required
-                    type="password"
-                    value={studentForm.password}
-                    onChange={e => setStudentForm({ ...studentForm, password: e.target.value })}
-                    placeholder="••••••••"
-                    className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
-                  />
+                  <div className="relative">
+                    <input
+                      required
+                      type={showStudentPassword ? "text" : "password"}
+                      value={studentForm.password}
+                      onChange={e => setStudentForm({ ...studentForm, password: e.target.value })}
+                      placeholder="••••••••"
+                      className="w-full px-3 pr-10 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowStudentPassword(!showStudentPassword)}
+                      className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 focus:outline-none"
+                      title={showStudentPassword ? "Parolni yashirish" : "Parolni ko'rsatish"}
+                    >
+                      {showStudentPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -798,14 +810,24 @@ export const SchoolAdminDashboard: React.FC = () => {
                 </div>
                 <div>
                   <label className="font-semibold text-slate-700 block mb-1">Parol *</label>
-                  <input
-                    required
-                    type="password"
-                    value={teacherForm.password}
-                    onChange={e => setTeacherForm({ ...teacherForm, password: e.target.value })}
-                    placeholder="••••••••"
-                    className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:outline-none"
-                  />
+                  <div className="relative">
+                    <input
+                      required
+                      type={showTeacherPassword ? "text" : "password"}
+                      value={teacherForm.password}
+                      onChange={e => setTeacherForm({ ...teacherForm, password: e.target.value })}
+                      placeholder="••••••••"
+                      className="w-full px-3 pr-10 py-2 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-600 focus:outline-none"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowTeacherPassword(!showTeacherPassword)}
+                      className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 focus:outline-none"
+                      title={showTeacherPassword ? "Parolni yashirish" : "Parolni ko'rsatish"}
+                    >
+                      {showTeacherPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
                 </div>
               </div>
 

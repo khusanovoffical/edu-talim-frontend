@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { api } from '../services/api';
 import { ExplanationStyle } from '../types';
-import { Settings, User, Sparkles, Lock, CheckCircle2, AlertCircle } from 'lucide-react';
+import { Settings, User, Sparkles, Lock, CheckCircle2, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { BackButton } from '../components/BackButton';
 
 export const SettingsPage: React.FC = () => {
@@ -11,6 +11,7 @@ export const SettingsPage: React.FC = () => {
   const [grade, setGrade] = useState<number>(user?.grade || 9);
   const [style, setStyle] = useState<ExplanationStyle>(user?.explanation_style || 'step_by_step');
   const [newPassword, setNewPassword] = useState('');
+  const [showNewPassword, setShowNewPassword] = useState(false);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
@@ -120,13 +121,23 @@ export const SettingsPage: React.FC = () => {
 
         <div className="pt-3 border-t border-slate-100">
           <label className="font-bold text-slate-700 block mb-1">Yangi maxfiy parol (o'zgartirishni xohlasangiz)</label>
-          <input
-            type="password"
-            value={newPassword}
-            onChange={e => setNewPassword(e.target.value)}
-            placeholder="Kamida 6 belgi yoki bo'sh qoldiring"
-            className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
-          />
+          <div className="relative">
+            <input
+              type={showNewPassword ? "text" : "password"}
+              value={newPassword}
+              onChange={e => setNewPassword(e.target.value)}
+              placeholder="Kamida 6 belgi yoki bo'sh qoldiring"
+              className="w-full p-2.5 pr-10 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
+            />
+            <button
+              type="button"
+              onClick={() => setShowNewPassword(!showNewPassword)}
+              className="absolute right-3 top-3 text-slate-400 hover:text-slate-600 focus:outline-none"
+              title={showNewPassword ? "Parolni yashirish" : "Parolni ko'rsatish"}
+            >
+              {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
+          </div>
         </div>
 
         <div className="pt-4 flex justify-end">

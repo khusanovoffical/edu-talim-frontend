@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
   Sparkles, Lock, Mail, ArrowRight, AlertCircle, X, Send,
-  User, MapPin, Briefcase, AtSign, CheckCircle
+  User, MapPin, Briefcase, AtSign, CheckCircle, Eye, EyeOff, Phone
 } from 'lucide-react';
 
 // AccountRequestModal komponenti
@@ -14,18 +14,20 @@ const AccountRequestModal: React.FC<{ onClose: () => void }> = ({ onClose }) => 
     role_description: '',
     desired_login: '',
     desired_password: '',
+    phone_number: '',
     telegram: '',
     instagram: '',
     email_contact: ''
   });
+  const [showDesiredPassword, setShowDesiredPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.telegram && !form.instagram && !form.email_contact) {
-      setError('Kamida bitta aloqa manzili kiriting (Telegram, Instagram yoki Email)');
+    if (!form.phone_number && !form.telegram && !form.instagram && !form.email_contact) {
+      setError("Kamida bitta aloqa manzili kiriting (Telefon raqam, Telegram, Instagram yoki Email)");
       return;
     }
     setLoading(true);
@@ -148,20 +150,40 @@ const AccountRequestModal: React.FC<{ onClose: () => void }> = ({ onClose }) => 
               </div>
               <div>
                 <label className="font-semibold text-slate-700 block mb-1">Xohlagan parol *</label>
-                <input
-                  type="password"
-                  required
-                  value={form.desired_password}
-                  onChange={e => setForm({ ...form, desired_password: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
-                  placeholder="••••••••"
-                />
+                <div className="relative">
+                  <input
+                    type={showDesiredPassword ? "text" : "password"}
+                    required
+                    value={form.desired_password}
+                    onChange={e => setForm({ ...form, desired_password: e.target.value })}
+                    className="w-full pl-4 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                    placeholder="••••••••"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowDesiredPassword(!showDesiredPassword)}
+                    className="absolute right-3 top-3 text-slate-400 hover:text-slate-600 focus:outline-none"
+                    title={showDesiredPassword ? "Parolni yashirish" : "Parolni ko'rsatish"}
+                  >
+                    {showDesiredPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
             </div>
 
             <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4">
               <p className="text-xs font-semibold text-amber-800 mb-3">Aloqa uchun (kamida bittasini to'ldiring) *</p>
               <div className="space-y-2">
+                <div className="relative">
+                  <Phone className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                  <input
+                    type="tel"
+                    value={form.phone_number}
+                    onChange={e => setForm({ ...form, phone_number: e.target.value })}
+                    className="w-full pl-9 pr-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none text-xs"
+                    placeholder="Telefon raqam: +998 90 123 45 67"
+                  />
+                </div>
                 <div className="relative">
                   <AtSign className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
                   <input
@@ -213,6 +235,7 @@ export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showRequestModal, setShowRequestModal] = useState(false);
@@ -284,13 +307,21 @@ export const LoginPage: React.FC = () => {
             <div className="relative">
               <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 required
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none focus:bg-white transition"
+                className="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-600 focus:outline-none focus:bg-white transition"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-3 text-slate-400 hover:text-slate-600 focus:outline-none"
+                title={showPassword ? "Parolni yashirish" : "Parolni ko'rsatish"}
+              >
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
           </div>
 

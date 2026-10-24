@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { Navigate } from 'react-router-dom';
 import {
   Users, Building2, Shield, Bot, MessageSquare, Plus, Trash2,
-  CheckCircle, XCircle, Eye, RefreshCw, BarChart3, School, FileText,
+  CheckCircle, XCircle, Eye, EyeOff, RefreshCw, BarChart3, School, FileText,
   Search, Filter, CheckCircle2, AlertTriangle, ArrowRight, Clock,
   Key, Zap, Cpu, Sparkles, BookOpen, Layers, Phone, MapPin, Mail,
   Send, ExternalLink, X, ShieldAlert, UserCheck, AlertCircle, ChevronRight
@@ -438,6 +438,7 @@ const UsersTab: React.FC = () => {
 
   // Modal holati
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showModalPassword, setShowModalPassword] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     full_name: '',
@@ -801,14 +802,24 @@ const UsersTab: React.FC = () => {
 
               <div>
                 <label className="block font-bold text-slate-700 mb-1">Dastlabki Parol *</label>
-                <input
-                  type="password"
-                  required
-                  placeholder="Kamida 6 ta belgi"
-                  value={formData.password}
-                  onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white"
-                />
+                <div className="relative">
+                  <input
+                    type={showModalPassword ? "text" : "password"}
+                    required
+                    placeholder="Kamida 6 ta belgi"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    className="w-full p-2.5 pr-10 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowModalPassword(!showModalPassword)}
+                    className="absolute right-3 top-3 text-slate-400 hover:text-slate-600 focus:outline-none"
+                    title={showModalPassword ? "Parolni yashirish" : "Parolni ko'rsatish"}
+                  >
+                    {showModalPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -1916,7 +1927,9 @@ const RequestsTab: React.FC = () => {
                         <td className="py-3.5 px-4 font-mono font-bold text-blue-700">{r.desired_login}</td>
                         <td className="py-3.5 px-4 font-mono text-slate-500">••••••••</td>
                         <td className="py-3.5 px-4 text-slate-600">
+                          {r.phone_number && <div className="text-[11px] font-bold text-slate-800">Tel: {r.phone_number}</div>}
                           {r.telegram && <div className="text-[11px] text-blue-600">TG: @{r.telegram.replace('@', '')}</div>}
+                          {r.instagram && <div className="text-[11px] text-pink-600">Insta: @{r.instagram.replace('@', '')}</div>}
                           {r.email_contact && <div className="text-[11px] text-slate-500">{r.email_contact}</div>}
                         </td>
                         <td className="py-3.5 px-4">

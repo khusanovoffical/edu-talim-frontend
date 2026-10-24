@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import {
   Sparkles, User, MapPin, School as SchoolIcon, Briefcase, AtSign,
   Lock, Send, CheckCircle2, AlertCircle, ArrowLeft, GraduationCap,
-  BookOpen, Phone, Mail, Instagram, ShieldCheck, HelpCircle
+  BookOpen, Phone, Mail, Instagram, ShieldCheck, HelpCircle, Eye, EyeOff
 } from 'lucide-react';
 import { BackButton } from '../components/BackButton';
 
@@ -50,8 +50,10 @@ export const RequestAccountPage: React.FC = () => {
   // Login va parol
   const [desiredLogin, setDesiredLogin] = useState('');
   const [desiredPassword, setDesiredPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   // Aloqa manzillari
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [telegram, setTelegram] = useState('');
   const [instagram, setInstagram] = useState('');
   const [emailContact, setEmailContact] = useState('');
@@ -131,12 +133,13 @@ export const RequestAccountPage: React.FC = () => {
       return;
     }
 
+    const cleanPhone = phoneNumber.trim();
     const cleanTg = telegram.trim().replace(/^@/, '');
     const cleanInsta = instagram.trim().replace(/^@/, '');
     const cleanMail = emailContact.trim();
 
-    if (!cleanTg && !cleanInsta && !cleanMail) {
-      setError("Admin siz bilan bog'lanishi uchun kamida bitta aloqa manzilini (Telegram, Instagram yoki Email) kiriting");
+    if (!cleanPhone && !cleanTg && !cleanInsta && !cleanMail) {
+      setError("Admin siz bilan bog'lanishi uchun kamida bitta aloqa manzilini (Telefon raqam, Telegram, Instagram yoki Email) kiriting");
       return;
     }
 
@@ -153,6 +156,7 @@ export const RequestAccountPage: React.FC = () => {
       role_description: roleDesc,
       desired_login: desiredLogin.trim().toLowerCase().replace(/\s+/g, '_'),
       desired_password: desiredPassword.trim(),
+      phone_number: cleanPhone || null,
       telegram: cleanTg ? `@${cleanTg}` : null,
       instagram: cleanInsta ? `@${cleanInsta}` : null,
       email_contact: cleanMail || null
@@ -527,13 +531,21 @@ export const RequestAccountPage: React.FC = () => {
                   <div className="relative">
                     <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
                     <input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       required
                       value={desiredPassword}
                       onChange={(e) => setDesiredPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition"
+                      className="w-full pl-10 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:bg-white transition"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3.5 top-3.5 text-slate-400 hover:text-slate-600 focus:outline-none"
+                      title={showPassword ? "Parolni yashirish" : "Parolni ko'rsatish"}
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
                   </div>
                   <p className="text-[11px] text-slate-500 mt-1">
                     Kamida 6 ta belgi. Tasdiqlangach shu parol bilan kirasiz.
@@ -555,7 +567,22 @@ export const RequestAccountPage: React.FC = () => {
                   So'rovingiz tasdiqlanganda login va parolingiz shu kontaktga yuboriladi. <strong>Kamida bittasini to'ldiring:</strong>
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+                  {/* Telefon raqam */}
+                  <div>
+                    <label className="block font-bold text-slate-700 mb-1 flex items-center gap-1.5">
+                      <Phone className="w-3.5 h-3.5 text-blue-600" />
+                      Telefon raqam
+                    </label>
+                    <input
+                      type="tel"
+                      value={phoneNumber}
+                      onChange={(e) => setPhoneNumber(e.target.value)}
+                      placeholder="+998 90 123 45 67"
+                      className="w-full px-3.5 py-2.5 bg-white border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600"
+                    />
+                  </div>
+
                   {/* Telegram */}
                   <div>
                     <label className="block font-bold text-slate-700 mb-1 flex items-center gap-1.5">
