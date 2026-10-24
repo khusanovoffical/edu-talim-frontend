@@ -9,8 +9,9 @@ export default defineConfig({
     host: true,
     proxy: {
       '/api': {
-        target: 'http://localhost:8000',
-        changeOrigin: true
+        target: 'https://edu-talim-backent.vercel.app',
+        changeOrigin: true,
+        secure: false
       }
     }
   }
