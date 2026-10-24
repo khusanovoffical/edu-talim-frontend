@@ -9,6 +9,8 @@ import {
   Lock,
   UserPlus,
   LogIn,
+  Eye,
+  EyeOff,
 } from 'lucide-react';
 import { apiFetch, setStoredAuth } from '../services/api';
 import type { ProjectItem, SchoolItem, UserProfile } from '../types';
@@ -70,6 +72,7 @@ export const PublicPages: React.FC<PublicPagesProps> = ({
   // Auth form states
   const [loginEmail, setLoginEmail] = useState('jasur.student@eduai.uz');
   const [loginPassword, setLoginPassword] = useState('EduAI2026!');
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
   const [authSuccess, setAuthSuccess] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
@@ -78,6 +81,7 @@ export const PublicPages: React.FC<PublicPagesProps> = ({
   const [regName, setRegName] = useState('');
   const [regEmail, setRegEmail] = useState('');
   const [regPassword, setRegPassword] = useState('');
+  const [showRegPassword, setShowRegPassword] = useState(false);
   const [regRole, setRegRole] = useState<'student' | 'teacher'>('student');
   const [regSchoolId, setRegSchoolId] = useState('school-145');
   const [regGrade, setRegGrade] = useState(7);
@@ -727,13 +731,23 @@ export const PublicPages: React.FC<PublicPagesProps> = ({
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">Parol</label>
-                  <input
-                    type="password"
-                    required
-                    value={loginPassword}
-                    onChange={(e) => setLoginPassword(e.target.value)}
-                    className="w-full px-3.5 py-2.5 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:border-[#1E3A8A]"
-                  />
+                  <div className="relative">
+                    <input
+                      type={showLoginPassword ? "text" : "password"}
+                      required
+                      value={loginPassword}
+                      onChange={(e) => setLoginPassword(e.target.value)}
+                      className="w-full px-3.5 pr-10 py-2.5 text-sm bg-white border border-slate-300 rounded-lg focus:outline-none focus:border-[#1E3A8A]"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowLoginPassword(!showLoginPassword)}
+                      className="absolute right-3 top-3 text-slate-400 hover:text-slate-600 focus:outline-none"
+                      title={showLoginPassword ? "Parolni yashirish" : "Parolni ko'rsatish"}
+                    >
+                      {showLoginPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
                 </div>
                 <button
                   type="submit"
@@ -894,14 +908,24 @@ export const PublicPages: React.FC<PublicPagesProps> = ({
                 <label className="block text-xs font-semibold text-slate-700 mb-1">
                   Parol (kamida 8 ta belgi)
                 </label>
-                <input
-                  type="password"
-                  required
-                  minLength={8}
-                  value={regPassword}
-                  onChange={(e) => setRegPassword(e.target.value)}
-                  className="w-full px-3.5 py-2.5 text-sm bg-white border border-slate-300 rounded-lg"
-                />
+                <div className="relative">
+                  <input
+                    type={showRegPassword ? "text" : "password"}
+                    required
+                    minLength={8}
+                    value={regPassword}
+                    onChange={(e) => setRegPassword(e.target.value)}
+                    className="w-full px-3.5 pr-10 py-2.5 text-sm bg-white border border-slate-300 rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowRegPassword(!showRegPassword)}
+                    className="absolute right-3 top-3 text-slate-400 hover:text-slate-600 focus:outline-none"
+                    title={showRegPassword ? "Parolni yashirish" : "Parolni ko'rsatish"}
+                  >
+                    {showRegPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
               </div>
 
               <button
